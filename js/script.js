@@ -202,7 +202,6 @@ function searchNotes(search) {
     showNotes();
 }
 
-
 //Events
 addNoteBtn.addEventListener('click', () => addNote());
 
@@ -210,6 +209,13 @@ searchInput.addEventListener('keyup', (e) => {
     const search = e.target.value;
 
     searchNotes(search)
+});
+
+noteInput.addEventListener('keydown', (e) => {
+    
+    if (e.key === "Enter") {
+    addNote();
+    }
 })
 
 //initialization
