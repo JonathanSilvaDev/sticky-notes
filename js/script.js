@@ -92,6 +92,10 @@ function createNote(id, content, fixed) {
         deleteNote(id, element)
     })
 
+    element.querySelector('.bi-file-earmark-plus').addEventListener('click', () => {
+        copyNote(id)
+    })
+
     return element;
 }
 
@@ -102,9 +106,9 @@ function toggleFixNote(id) {
 
     targetNote.fixed = !targetNote.fixed;
 
-    saveNotes(notes)
+    saveNotes(notes);
 
-    showNotes()
+    showNotes();
 }
 
 function deleteNote(id, element) {
@@ -116,11 +120,36 @@ function deleteNote(id, element) {
     notesContainer.removeChild(element);
 }
 
+function copyNote(id) {
+    const notes = getNotes();
+
+    const targetNote = notes.filter((note) => note.id === id)[0];
+
+    const noteObject = {
+        id: generateId(),
+        content: targetNote.content,
+        fixed: false,
+    };
+
+    const noteElement = createNote(
+        noteObject.id,
+        noteObject.content,
+        noteObject.fixed
+    );
+
+    notesContainer.appendChild(noteElement);
+
+    notes.push(noteObject);
+
+    saveNotes(notes);
+
+}
+
 //Local storage
 function getNotes() {
     const notes = JSON.parse(localStorage.getItem('notes') || '[]');
 
-    const orderedNotes = notes.sort((a,b) => a.fixed > b.fixed ? -1 : 1);
+    const orderedNotes = notes.sort((a, b) => a.fixed > b.fixed ? -1 : 1);
 
     return orderedNotes;
 }
